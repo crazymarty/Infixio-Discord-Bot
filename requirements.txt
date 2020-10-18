@@ -1,7 +1,1 @@
-json
-random
-sys
-traceback
-aiohttp
 discord
-asyncio
