@@ -264,5 +264,5 @@ async def foo(msg: discord.Message):
                 await user.send(f"**[ADMIN]** {msg.author} » `{msg.content}`")
     pass
 
-client.run(TOKEN)
+client.run(os.environ['token'])
 
