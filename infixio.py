@@ -4,6 +4,7 @@ import sys
 import traceback
 import aiohttp
 import discord
+import os
 from discord.ext import commands, tasks
 from discord.ext.commands import has_permissions
 
