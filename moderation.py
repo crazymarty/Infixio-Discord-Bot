@@ -2,7 +2,7 @@ import asyncio
 from datetime import time
 
 import discord
-from discord.ext import flags, commands
+from discord.ext import commands
 from discord.ext.commands import has_permissions
 
 import infixio as inf
