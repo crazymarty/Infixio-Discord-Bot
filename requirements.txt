@@ -4,3 +4,4 @@ sys
 traceback
 aiohttp
 discord
+asyncio
