@@ -219,7 +219,7 @@ async def on_message(msg):
     if msg.author.id != 270904126974590976:
         msgg = msg.content.split(" ")
         if any(i in msgg for i in badWords):
-            channel = client.get_channel(747346000380690472)
+            channel = client.get_channel(740645296597500028)
             await msg.delete()
             embed = discord.Embed(
                 description=f"**Message:** {msg.content} \n **Channel**: <#{msg.channel.id}>",
@@ -246,7 +246,7 @@ async def on_message(msg):
 async def fo(msg: discord.Message):
     if not msg.guild:
         if msg.author != client.user:
-            channel = client.get_channel(747109686766993498)
+            channel = client.get_channel(767726478090960927)
             await channel.send(f"**[DM]** {msg.author} » `{msg.content}`")
             data = getInfo()
             data['lastPersonToDm'] = msg.author.id
@@ -260,7 +260,7 @@ async def foo(msg: discord.Message):
         if msg.author != client.user:
             data = getInfo()
             user = data['lastPersonToDm']
-            if msg.channel.id == 747109686766993498:
+            if msg.channel.id == 767726478090960927:
                 user = client.get_user(user)
                 await user.send(f"**[ADMIN]** {msg.author} » `{msg.content}`")
     pass
