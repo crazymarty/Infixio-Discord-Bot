@@ -4,9 +4,9 @@ import sys
 import traceback
 import aiohttp
 import discord
-import os
-from discord.ext import commands, tasks
+from discord.ext import flags, commands, tasks
 from discord.ext.commands import has_permissions
+import os
 
 
 def importJson(data):
@@ -25,7 +25,15 @@ def getPrefix():
     pref = data['prefix']
     return pref
 
+
+def getToken():
+    data = getInfo()
+    toke = data['token']
+    return toke
+
+
 prefix = getPrefix()
+TOKEN = getToken()
 client = commands.Bot(command_prefix=commands.when_mentioned_or(prefix))
 embedColor = discord.Colour.gold()
 
@@ -53,6 +61,7 @@ async def quote(ctx):
     random.seed(a=None)
     response = random.choice(responses)
     await ctx.send(response)
+
 
 # @client.command()
 # async def selfdestruct(ctx):
@@ -200,7 +209,7 @@ async def my_timer():
 async def on_ready():
     guild = client.get_guild(id=736860059971223613)
     av = await guild.icon_url.read()
-    await client.user.edit(avatar=av)
+    #    await client.user.edit(avatar=av)
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="Infix Studio"))
     my_timer.start()
 
@@ -219,7 +228,7 @@ async def on_message(msg):
     if msg.author.id != 270904126974590976:
         msgg = msg.content.split(" ")
         if any(i in msgg for i in badWords):
-            channel = client.get_channel(740645296597500028)
+            channel = client.get_channel(747346000380690472)
             await msg.delete()
             embed = discord.Embed(
                 description=f"**Message:** {msg.content} \n **Channel**: <#{msg.channel.id}>",
@@ -246,7 +255,7 @@ async def on_message(msg):
 async def fo(msg: discord.Message):
     if not msg.guild:
         if msg.author != client.user:
-            channel = client.get_channel(767726478090960927)
+            channel = client.get_channel(747109686766993498)
             await channel.send(f"**[DM]** {msg.author} » `{msg.content}`")
             data = getInfo()
             data['lastPersonToDm'] = msg.author.id
@@ -260,10 +269,35 @@ async def foo(msg: discord.Message):
         if msg.author != client.user:
             data = getInfo()
             user = data['lastPersonToDm']
-            if msg.channel.id == 767726478090960927:
+            if msg.channel.id == 747109686766993498:
                 user = client.get_user(user)
                 await user.send(f"**[ADMIN]** {msg.author} » `{msg.content}`")
     pass
 
-client.run(os.environ['token'])
 
+@client.listen('on_message_delete')
+async def fooo(msg: discord.Message):
+    data = getInfo()
+    print("test 5")
+    if data['logch']:
+        print("test 4")
+        ch = client.get_channel(data['logch'])
+        chan = msg.channel
+        guild = chan.guild
+        async for entry in guild.audit_logs(limit=1, action=discord.AuditLogAction.message_delete):
+            print("test 1")
+            if not entry.target.bot:
+                print("test 3")
+                embed = discord.Embed(
+                    description=f"Message deleted in <#{chan.id}>"
+                )
+                embed.color = embedColor
+                embed.set_author(name="Infix Log Message", icon_url=client.user.avatar_url)
+                url = entry.user.avatar_url
+                embed.add_field(name=f"**Message by:**", value=f"{entry.target.mention}")
+                embed.add_field(name=f"**Message:**", value=f"{msg.content}")
+                embed.set_footer(text=f"Deleted by {entry.user}", icon_url=url)
+                await ch.send(embed=embed)
+    pass
+
+client.run(os.environ['token'])
