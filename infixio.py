@@ -27,14 +27,7 @@ def getPrefix():
     return pref
 
 
-def getToken():
-    data = getInfo()
-    toke = data['token']
-    return toke
-
-
 prefix = getPrefix()
-TOKEN = getToken()
 client = commands.Bot(command_prefix=commands.when_mentioned_or(prefix))
 embedColor = discord.Colour.gold()
 
